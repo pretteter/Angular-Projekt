@@ -19,15 +19,15 @@ export class PageListComponent implements OnInit, OnDestroy {
 
   public toDoShow: boolean;
   public toDoDoneShow: boolean;
-  public $todos: ToDo[];
-  public $todosdone: ToDo[];
+  public todos: ToDo[];
+  public todosdone: ToDo[];
   public subs = new Subscription();
 
   constructor(public _dataService: DataService, public _dragulaService: DragulaService) {
     this.toDoShow = true;
     this.toDoDoneShow = false;
-    this.$todos = []
-    this.$todosdone = [];
+    this.todos = []
+    this.todosdone = [];
 
     this.loadData();
 
@@ -44,54 +44,62 @@ export class PageListComponent implements OnInit, OnDestroy {
 
   public position(): void {
     let position = 0;
-    this.$todos.forEach((todo: ToDo) => {
+    this.todos.forEach((todo: ToDo) => {
       position += 1;
       todo.position = position;
-      this._dataService.putToDo(todo).subscribe((data: ToDo) => {
-      }, error => {
-        console.log(`%cERROR: ${error.message}`, `color: red; font-size: 12px;`);
+      this._dataService.putToDo(todo).subscribe({
+
+        next: () => {
+        },
+        error: (err) => { console.log(err) },
+        complete: () => { console.log("position completed") }
+
       });
     })
   }
 
 
   public loadData(): void {
-    this.$todos = [];
-    this.$todosdone = [];
-    this._dataService.getToDo().subscribe((data: ToDo[]) => {
-      data.forEach((toDo: ToDo) => {
-        if (toDo.status === true) {
-          this.$todosdone.push(toDo);
-        } else {
-          this.$todos.push(toDo);
-        }
+    this.todos = [];
+    this.todosdone = [];
+    this._dataService.getToDo().subscribe({
 
-      });
-      this.$todos.sort((obj1, obj2) => {
-        return obj1.position - obj2.position;
+      next: (data: ToDo[]) => {
+        data.forEach((toDo: ToDo) => {
+          if (toDo.status === true) {
+            this.todosdone.push(toDo);
+          } else {
+            this.todos.push(toDo);
+          }
 
-      })
+        });
+        this.todos.sort((obj1, obj2) => {
+          return obj1.position - obj2.position;
 
-    }, error => {
-      console.log("%cERROR: ${error.message}", "color: red; font-size: 12px");
-    });
+        })
+      },
+      error: (err) => { console.log(err) },
+      complete: () => { console.log("load completed") }
+
+    })
   }
-
 
 
   public create(event: ToDo): void {
 
-    event.position = this.$todos.length + 1;
-    this._dataService.postToDo(event).subscribe((data: ToDo) => {
-      console.log(`%cSUC: "${data.label}" wurde erfolgreich erstellt`);
-      this.$todos.push(data);
-      this.position();
-    }, error => {
-
-      console.log(`%cERROR: ${error.message}`);
-
-    })
-
+    event.position = this.todos.length + 1;
+    this._dataService.postToDo(event).subscribe({
+      next: (data: ToDo) => {
+        console.log(`%cSUC: "${data.label}" wurde erfolgreich erstellt`);
+        this.todos.push(data);
+        this.position();
+      },
+      error: (err) => {
+        console.log("error while creating")
+        console.log(err)
+      },
+      complete: () => { console.log("created completed") }
+    });
   }
 
 
@@ -101,12 +109,12 @@ export class PageListComponent implements OnInit, OnDestroy {
     if ("check" === event.label) {
 
       if (!event.object.status) {
-        this.$todosdone.splice(this.$todosdone.indexOf(event.object), 1);
-        this.$todos.push(event.object);
+        this.todosdone.splice(this.todosdone.indexOf(event.object), 1);
+        this.todos.push(event.object);
       }
       else {
-        this.$todos.splice(this.$todos.indexOf(event.object), 1);
-        this.$todosdone.push(event.object);
+        this.todos.splice(this.todos.indexOf(event.object), 1);
+        this.todosdone.push(event.object);
       }
     }
 
@@ -115,7 +123,7 @@ export class PageListComponent implements OnInit, OnDestroy {
 
 
       if (event.object.status) {
-        this.$todosdone.forEach((toDo: ToDo) => {
+        this.todosdone.forEach((toDo: ToDo) => {
           if (toDo.id === event.object.id) {
             toDo.label = event.object.label;
           }
@@ -123,7 +131,7 @@ export class PageListComponent implements OnInit, OnDestroy {
 
       }
       else {
-        this.$todos.forEach((toDo: ToDo) => {
+        this.todos.forEach((toDo: ToDo) => {
           if (toDo.id === event.object.id) {
             toDo.label = event.object.label;
           }

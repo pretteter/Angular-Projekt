@@ -12,7 +12,7 @@ import { DataService } from "../../_service/data.service"
 })
 export class TemplateTodoComponent implements OnInit {
 
-  @Input() toDo$: ToDo;
+  @Input() toDo: ToDo;
   @Output() ping: EventEmitter<any> = new EventEmitter<any>();
 
   constructor(public _dataService: DataService) { }
@@ -22,31 +22,37 @@ export class TemplateTodoComponent implements OnInit {
   }
 
   public changeCheck(event?: any): void {
-    this.toDo$.status = !this.toDo$.status;
-    this._dataService.putToDo(this.toDo$).subscribe((data: ToDo) => {
-      const eventObject: EventPing = {
-        label: "check",
-        object: this.toDo$
-      };
-      this.ping.emit(eventObject);
-    }, error => {
-      console.log(`%cERROR: ${error.message}`);
+    this.toDo.status = !this.toDo.status;
+    this._dataService.putToDo(this.toDo).subscribe(
 
-    });
-
-
+      {
+        next: (data: ToDo) => {
+          const eventObject: EventPing = {
+            label: "check",
+            object: this.toDo
+          };
+          this.ping.emit(eventObject);
+        },
+        error: (err) => { console.log(err) },
+        complete: () => { console.log("delete completed") }
+      });
   }
 
   public changeLabel(event?: any): void {
 
-    this._dataService.putToDo(this.toDo$).subscribe((data: ToDo) => {
-      const eventObject: EventPing = {
-        label: "label",
-        object: this.toDo$
-      };
-      this.ping.emit(eventObject);
-    }, error => {
-      console.log(`%cERROR: ${error.message}`);
+    this._dataService.putToDo(this.toDo).subscribe({
+
+      next: (res: any) => { console.log(res) },
+      error: (err) => { console.log(err) },
+      complete: () => { console.log("changeLabel completed") }
+
+      //   const eventObject: EventPing = {
+      //     label: "label",
+      //     object: this.toDo
+      //   };
+      //   this.ping.emit(eventObject);
+      // }, error => {
+      //   console.log(`%cERROR: ${error.message}`);
 
     });
   }
@@ -54,18 +60,18 @@ export class TemplateTodoComponent implements OnInit {
 
 
   public deleteToDo(event?: any): void {
-
-    this._dataService.deleteToDo(this.toDo$).subscribe((data: ToDo) => {
-      const eventObject: EventPing = {
-        label: "delete",
-        object: this.toDo$
-      };
-      this.ping.emit(eventObject);
-    }, error => {
-
-      console.log(`%cERROR: ${error.message}`);
-
-    });
+    this._dataService.deleteToDo(this.toDo)
+      .subscribe({
+        next: (data: ToDo) => {
+          const eventObject: EventPing = {
+            label: "delete",
+            object: this.toDo
+          };
+          this.ping.emit(eventObject);
+        },
+        error: (err) => { console.log(err) },
+        complete: () => { console.log("delete completed") }
+      });
     window.location.reload();
   }
 }

@@ -10,11 +10,11 @@ import { ToDo } from "../../_interface/todo";
 })
 export class TemplateTodoFormComponent implements OnInit {
 
-  public toDo$: ToDo;
+  public toDo: ToDo;
   @Output() ping: EventEmitter<ToDo> = new EventEmitter<ToDo>();
 
   constructor() {
-    this.toDo$ = {
+    this.toDo = {
       id: undefined,
       label: undefined,
       status: false,
@@ -28,9 +28,9 @@ export class TemplateTodoFormComponent implements OnInit {
 
   public createToDo(event?: any): void {
     console.log("createToDo");
-    this.ping.emit(this.toDo$);
+    this.ping.emit(this.toDo);
 
-    this.toDo$ = {
+    this.toDo = {
       id: undefined,
       label: undefined,
       status: false,
