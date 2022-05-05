@@ -105,7 +105,6 @@ export class PageListComponent implements OnInit, OnDestroy {
 
   public update(event: EventPing): void {
 
-
     if ("check" === event.label) {
 
       if (!event.object.status) {
@@ -118,9 +117,7 @@ export class PageListComponent implements OnInit, OnDestroy {
       }
     }
 
-
     if ("label" === event.label) {
-
 
       if (event.object.status) {
         this.todosdone.forEach((toDo: ToDo) => {
@@ -139,9 +136,5 @@ export class PageListComponent implements OnInit, OnDestroy {
 
       }
     }
-
-
-
   }
-
 }

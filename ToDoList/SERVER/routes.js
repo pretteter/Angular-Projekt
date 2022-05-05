@@ -5,7 +5,6 @@ const router = express.Router();
 // Get all posts
 router.get("/todos", async (req, res) => {
   const posts = await Post.find();
-  // res.set("Access-Control-Allow-Origin", "*");
   res.send(JSON.parse(JSON.stringify(posts)));
   console.log("server get all");
   console.log(res);
@@ -21,7 +20,6 @@ router.post("/todos", async (req, res) => {
     position: req.body.position,
   });
   await post.save();
-  // res.set("Access-Control-Allow-Origin", "*");
   res.send(post);
 });
 
@@ -31,7 +29,6 @@ router.get("/todos/:id", async (req, res) => {
     res.send(post);
   } catch {
     res.status(404);
-    // res.set("Access-Control-Allow-Origin", "*");
     res.send({ error: "Post doesn't exist!" });
   }
 });
@@ -47,7 +44,7 @@ router.patch("/todos/:id", async (req, res) => {
     if (req.body.label) {
       post.label = req.body.label;
     }
-    if (req.body.status) {
+    if (req.body.status!==undefined) {
       post.status = req.body.status;
     }
     if (req.body.position) {

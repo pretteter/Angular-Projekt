@@ -42,7 +42,14 @@ export class TemplateTodoComponent implements OnInit {
 
     this._dataService.putToDo(this.toDo).subscribe({
 
-      next: (res: any) => { console.log(res) },
+      next: (res: any) => {
+        const eventObject: EventPing = {
+          label: "label",
+          object: this.toDo
+        };
+        this.ping.emit(eventObject);
+        console.log(res)
+      },
       error: (err) => { console.log(err) },
       complete: () => { console.log("changeLabel completed") }
 
@@ -63,11 +70,11 @@ export class TemplateTodoComponent implements OnInit {
     this._dataService.deleteToDo(this.toDo)
       .subscribe({
         next: (data: ToDo) => {
-          const eventObject: EventPing = {
-            label: "delete",
-            object: this.toDo
-          };
-          this.ping.emit(eventObject);
+          // const eventObject: EventPing = {
+          //   label: "delete",
+          //   object: this.toDo
+          // };
+          // this.ping.emit(eventObject);
         },
         error: (err) => { console.log(err) },
         complete: () => { console.log("delete completed") }
