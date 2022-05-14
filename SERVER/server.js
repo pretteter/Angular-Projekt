@@ -17,7 +17,18 @@ mongoose.connect(uri).then(() => {
   );
   app.use("/api", routes);
 
-  app.listen(3000, () => {
-    console.log("Server has started!");
+  var db = mongoose.connection;
+
+  db.on("error", console.error.bind(console, "connection error:"));
+
+  db.once("open", function () {
+    db.db.stats(function (err, stats) {
+      console.log(db.collections.todos.stats());
+    });
+  });
+
+  const Port = process.env.PORT || 3000;
+  app.listen(Port, () => {
+    console.warn(`App listening on http://localhost:${Port}`);
   });
 });

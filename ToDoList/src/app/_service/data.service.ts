@@ -9,6 +9,7 @@ import { ToDo } from "../_interface/todo";
 export class DataService {
 
   private serverURL = "http://127.0.0.1:3000/api/todos";
+  private serverURLStats= "http://127.0.0.1:3000/api/stats"
 
   constructor(
     private http: HttpClient
@@ -54,5 +55,9 @@ export class DataService {
 
     return this.http.patch<ToDo>(`${this.serverURL}/${object["_id"]}`, object, httpOptions);
 
+  }
+
+  public getStats(): Observable<any> {
+    return this.http.get<any>(this.serverURLStats)
   }
 }

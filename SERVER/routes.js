@@ -1,16 +1,14 @@
 const express = require("express");
-const Post = require("./models/Event"); // new
+const Post = require("./models/Event");
 const router = express.Router();
+
+module.exports = router;
 
 // Get all posts
 router.get("/todos", async (req, res) => {
   const posts = await Post.find();
-  res.send(JSON.parse(JSON.stringify(posts)));
-  console.log("server get all");
-  console.log(res);
+  res.send(posts);
 });
-
-module.exports = router;
 
 router.post("/todos", async (req, res) => {
   const post = new Post({
@@ -44,7 +42,7 @@ router.patch("/todos/:id", async (req, res) => {
     if (req.body.label) {
       post.label = req.body.label;
     }
-    if (req.body.status!==undefined) {
+    if (req.body.status !== undefined) {
       post.status = req.body.status;
     }
     if (req.body.position) {
@@ -62,11 +60,26 @@ router.patch("/todos/:id", async (req, res) => {
 router.delete("/todos/:id", async (req, res) => {
   try {
     await Post.deleteOne({ _id: req.params.id });
-    // res.set("Access-Control-Allow-Origin", "*");
     res.status(204).send();
   } catch {
     res.status(404);
-    // res.set("Access-Control-Allow-Origin", "*");
     res.send({ error: "Post doesn't exist!" });
+  }
+});
+
+router.get("/stats", async (req, res) => {
+  try {
+    const x = await Post.db.collections.todos.stats({
+      // scale: 1024,
+      indexDetails: true,
+      indexDetailsKey: {
+        borough: 1,
+        cuisine: 1,
+      },
+    });
+    res.send(x);
+  } catch {
+    res.status(404);
+    res.send({ error: "collection doesnt exist" });
   }
 });

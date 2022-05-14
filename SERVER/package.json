@@ -1,0 +1,28 @@
+{
+  "name": "myApp",
+  "version": "0.0.1",
+  "description": "My Project",
+  "dependencies": {
+    "body-parser": "^1.20.0",
+    "cors": "^2.8.5",
+    "express": "*",
+    "mongoose": "^6.3.2"
+  },
+  "engine": "node >=0.6.x",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon ./index.js",
+    "start": "node server.js"
+  },
+  "main": "server.js",
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "author": "myApp",
+  "license": "myApp",
+  "bugs": {
+    "url": ""
+  },
+  "homepage": "/"
+}
