@@ -8,20 +8,14 @@ import { ToDo } from "../_interface/todo";
 })
 export class DataService {
 
-  private serverURL = "http://127.0.0.1:3000/api/todos";
-  private serverURLStats= "http://127.0.0.1:3000/api/stats"
+  private serverURL = "https://todoverteilteanwendungen.herokuapp.com/api/todos";
+  private serverURLStats= "https://todoverteilteanwendungen.herokuapp.com/api/stats"
 
   constructor(
     private http: HttpClient
   ) { }
 
   public getToDo(): Observable<ToDo[]> {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        "Content-Type": "application/json"
-      })
-    };
-
     return this.http.get<ToDo[]>(this.serverURL)
   }
 
