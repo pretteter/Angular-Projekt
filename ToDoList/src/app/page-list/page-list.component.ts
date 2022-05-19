@@ -84,21 +84,21 @@ export class PageListComponent implements OnInit, OnDestroy {
     })
 
 
-    this._dataService.getStats().subscribe({
+    // this._dataService.getStats().subscribe({
 
-      next: (stats) => {
-        console.log(stats)
-        console.log("Anzahl an Einträgen " + stats?.count)
-        console.log("Größe aller Einträge in bites " + stats.size)
-        console.log("Durchschnittliche Größe eines Eintrages " + stats.avgObjSize)
-        console.log("Scale-Faktor " + stats.scaleFactor)
-        console.log("Speicherplatz insgesammt " + stats.storageSize)
-        console.log("Freier Speicher " + stats.freeStorageSize)
-      },
-      error: (err) => { console.log(err) },
-      complete: () => { console.log("stats completed") }
+    //   next: (stats) => {
+    //     console.log(stats)
+    //     console.log("Anzahl an Einträgen " + stats?.count)
+    //     console.log("Größe aller Einträge in bites " + stats.size)
+    //     console.log("Durchschnittliche Größe eines Eintrages " + stats.avgObjSize)
+    //     console.log("Scale-Faktor " + stats.scaleFactor)
+    //     console.log("Speicherplatz insgesammt " + stats.storageSize)
+    //     console.log("Freier Speicher " + stats.freeStorageSize)
+    //   },
+    //   error: (err) => { console.log(err) },
+    //   complete: () => { console.log("stats completed") }
 
-    })
+    // })
   }
 
 
