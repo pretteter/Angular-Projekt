@@ -2,10 +2,21 @@
   {{ isDataFromServerComplete() ? allDataFromServer.entries : "Keine Daten" }}
 </div>
 <div class="btn-group" role="group" aria-label="Radio Buttons with Bootstrap 5">
-  <label class="btn btn-outline-primary" (click)="getData(1)"
-    >Start Data</label
-  >
+  <label class="btn btn-outline-primary" (click)="getData(1)">Start Data</label>
   <label class="btn btn-outline-primary" (click)="stopGetData()"
     >Stop Data</label
   >
+</div>
+<br />
+<br />
+<div id="chart">
+  <apx-chart
+    [series]="chartOptions.series"
+    [chart]="chartOptions.chart"
+    [xaxis]="chartOptions.xaxis"
+    [dataLabels]="chartOptions.dataLabels"
+    [grid]="chartOptions.grid"
+    [stroke]="chartOptions.stroke"
+    [title]="chartOptions.title"
+  ></apx-chart>
 </div>
