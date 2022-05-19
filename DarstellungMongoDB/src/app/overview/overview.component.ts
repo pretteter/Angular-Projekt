@@ -23,17 +23,17 @@ export class OverviewComponent implements OnInit {
 
   }
 
-  getDataSeconds(seconds: number) {
+  getData(seconds: number) {
     this.timerSubscription = timer(0, seconds * 1000)
       .pipe(
         map(() => {
-          this.getData();
+          this.getDataOnce();
         })
       )
       .subscribe();
   }
 
-  public getData() {
+  public getDataOnce() {
     this._dataService.getStats().subscribe({
       next: (stats) => {
         console.log('data load');
@@ -62,5 +62,14 @@ export class OverviewComponent implements OnInit {
     for (let key of Object.keys(this.allDataFromServer)) {
       this.allDataFromServer[key] = null;
     }
+  }
+
+  isDataFromServerComplete(): boolean {
+    for (let key of Object.keys(this.allDataFromServer)) {
+      if (this.allDataFromServer[key]==null) {
+        return false;
+      }
+    }
+    return true;
   }
 }
