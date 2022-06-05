@@ -1,22 +1,56 @@
-<div>
-  {{ isDataFromServerComplete() ? allDataFromServer.entries : "Keine Daten" }}
-</div>
-<div class="btn-group" role="group" aria-label="Radio Buttons with Bootstrap 5">
-  <label class="btn btn-outline-primary" (click)="getData(1)">Start Data</label>
-  <label class="btn btn-outline-primary" (click)="stopGetData()"
-    >Stop Data</label
-  >
+<br />
+<div style="text-align: center; color: white">
+  <h2>Daten Mongo DB</h2>
+  <div>
+    <label class="btn btn-success" (click)="getData(1)">Start Datenfluss</label>&nbsp;
+    <label class="btn btn-danger" (click)="stopGetData()">Stop Datenfluss</label
+    >&nbsp;
+  </div>
 </div>
 <br />
 <br />
-<div id="chart">
+
+<div class="lineChart">
   <apx-chart
-    [series]="chartOptions.series"
-    [chart]="chartOptions.chart"
-    [xaxis]="chartOptions.xaxis"
-    [dataLabels]="chartOptions.dataLabels"
-    [grid]="chartOptions.grid"
-    [stroke]="chartOptions.stroke"
-    [title]="chartOptions.title"
+    [series]="chartNumberToDos.series"
+    [chart]="chartNumberToDos.chart"
+    [xaxis]="chartNumberToDos.xaxis"
+    [yaxis]="chartNumberToDos.yaxis"
+    [dataLabels]="chartNumberToDos.dataLabels"
+    [grid]="chartNumberToDos.grid"
+    [stroke]="chartNumberToDos.stroke"
+    [title]="chartNumberToDos.title"
+    [noData]="chartNumberToDos.noData"
   ></apx-chart>
+  <br />
 </div>
+
+<div id="twoPieCharts">
+  <span class="pieChart">
+    <apx-chart
+      [series]="chartSpaceToDos.series"
+      [chart]="chartSpaceToDos.chart"
+      [labels]="chartSpaceToDos.labels"
+      [responsive]="chartSpaceToDos.responsive"
+      [title]="chartSpaceToDos.title"
+      [noData]="chartSpaceToDos.noData"
+    ></apx-chart>
+  </span>
+
+  <span class="pieChart">
+    <apx-chart
+      [series]="chartSpaceToDos.series"
+      [chart]="chartSpaceToDos.chart"
+      [labels]="chartSpaceToDos.labels"
+      [responsive]="chartSpaceToDos.responsive"
+      [title]="chartSpaceToDos.title"
+      [noData]="chartSpaceToDos.noData"
+    ></apx-chart>
+    <br />
+  </span>
+</div>
+<app-toast-container
+  aria-live="polite"
+  aria-atomic="true"
+></app-toast-container>
+

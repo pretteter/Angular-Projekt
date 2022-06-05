@@ -8,8 +8,9 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { OverviewComponent } from './overview/overview.component';
 
 import { NgApexchartsModule } from 'ng-apexcharts';
+import { ToastContainerComponent } from './helper_components/toast-container/toast-container.component';
 @NgModule({
-  declarations: [AppComponent, OverviewComponent],
+  declarations: [AppComponent, OverviewComponent, ToastContainerComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

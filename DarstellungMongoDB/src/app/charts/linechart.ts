@@ -6,31 +6,39 @@ import {
   ApexTitleSubtitle,
   ApexStroke,
   ApexGrid,
+  ApexNoData,
+  ApexYAxis
 } from 'ng-apexcharts';
 
-export type ChartOptions = {
+export type LineChartOptions = {
   series: ApexAxisChartSeries;
   chart: ApexChart;
   xaxis: ApexXAxis;
+  yaxis: ApexYAxis | ApexYAxis[];
   dataLabels: ApexDataLabels;
   grid: ApexGrid;
   stroke: ApexStroke;
   title: ApexTitleSubtitle;
+  noData: ApexNoData;
 };
 
-export let lineChart:Partial<ChartOptions> = {
+export let lineChart: Partial<LineChartOptions> = {
   series: [
     {
-      name: 'Desktops',
+      name: '',
+      type: "",
       data: [],
+    },
+    {
+      name: "",
+      type: "",
+      data: []
     },
   ],
   chart: {
     height: 350,
     type: 'line',
-    zoom: {
-      enabled: false,
-    },
+    foreColor:'white',
   },
   dataLabels: {
     enabled: false,
@@ -39,18 +47,41 @@ export let lineChart:Partial<ChartOptions> = {
     curve: 'straight',
   },
   title: {
-    text: 'Anzahl der Einträge',
+    text: ' ToDo',
     align: 'left',
   },
   grid: {
-    row: {
-      colors: ['#f3f3f3', 'transparent'],
-      opacity: 0.5,
+    // row: {
+    //   colors: ['#f3f3f3', 'transparent'],
+    //   opacity: 0.5,
+    // },
+  },
+  noData: {
+    text: 'Warten auf Daten...',
+    align: 'center',
+    verticalAlign: 'middle',
+    offsetX: 0,
+    offsetY: 0,
+    style: {
+      color: undefined,
+      fontSize: '19px',
+      fontFamily: undefined,
     },
   },
+  yaxis: [
+    {
+      title: {
+        text: "Anzahl Todos"
+      }
+    },
+    {
+      opposite: true,
+      title: {
+        text: "Durschnittliche Größe"
+      }
+    }
+  ],
   xaxis: {
-    categories: [
-      ''
-    ],
+    categories: [''],
   },
 };
