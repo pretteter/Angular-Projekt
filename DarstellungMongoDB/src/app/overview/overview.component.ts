@@ -85,6 +85,23 @@ export class OverviewComponent implements OnInit {
         console.log('stats completed');
       },
     });
+
+    // this._dataService.getServerStats().subscribe({
+    //   next: (stats) => {
+    //     console.log('data load from Server');
+    //     console.log(stats)
+
+    //   },
+    //   error: (err) => {
+    //     console.log(err);
+    //     this.showDanger(
+    //       'Fehler beim holen der Daten. Entwicklerkonsole könnte hilfreich sein'
+    //     );
+    //   },
+    //   complete: () => {
+    //     console.log('stats completed');
+    //   },
+    // });
   }
 
   stopGetData() {

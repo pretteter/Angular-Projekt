@@ -2,8 +2,8 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ToDo } from '../_interface/todo';
 import { EventPing } from '../_interface/eventping';
 import { TestBed } from '@angular/core/testing';
-import { DataService } from "../_service/data.service";
-import { Subscription } from "rxjs";
+import { DataService } from '../_service/data.service';
+import { Subscription } from 'rxjs';
 //import { read } from 'fs';
 //import { Console } from 'console';
 // import { analyzeAndValidateNgModules } from '@angular/compiler';
@@ -12,35 +12,40 @@ import { DragulaService } from 'ng2-dragula';
 @Component({
   selector: 'app-page-list',
   templateUrl: './page-list.component.html',
-  styleUrls: ['./page-list.component.scss']
+  styleUrls: ['./page-list.component.scss'],
 })
 export class PageListComponent implements OnInit, OnDestroy {
-
-
   public toDoShow: boolean;
   public toDoDoneShow: boolean;
   public todos: ToDo[];
   public todosdone: ToDo[];
   public subs = new Subscription();
 
-  constructor(public _dataService: DataService, public _dragulaService: DragulaService) {
+  constructor(
+    public _dataService: DataService,
+    public _dragulaService: DragulaService
+  ) {
     this.toDoShow = true;
     this.toDoDoneShow = false;
-    this.todos = []
+    this.todos = [];
     this.todosdone = [];
 
     this.loadData();
 
     this._dragulaService.createGroup('todos', { removeOnSpill: false });
 
-    this.subs.add(_dragulaService.drop('todos').subscribe(({ el }) => { this.position(); }));
-
+    this.subs.add(
+      _dragulaService.drop('todos').subscribe(({ el }) => {
+        this.position();
+      })
+    );
   }
 
+  ngOnInit(): void {}
 
-  ngOnInit(): void { }
-
-  ngOnDestroy() { this.subs.unsubscribe(); }
+  ngOnDestroy() {
+    this.subs.unsubscribe();
+  }
 
   public position(): void {
     let position = 0;
@@ -48,22 +53,21 @@ export class PageListComponent implements OnInit, OnDestroy {
       position += 1;
       todo.position = position;
       this._dataService.putToDo(todo).subscribe({
-
-        next: () => {
+        next: () => {},
+        error: (err) => {
+          console.log(err);
         },
-        error: (err) => { console.log(err) },
-        complete: () => { console.log("position completed") }
-
+        complete: () => {
+          console.log('position completed');
+        },
       });
-    })
+    });
   }
-
 
   public loadData(): void {
     this.todos = [];
     this.todosdone = [];
     this._dataService.getToDo().subscribe({
-
       next: (data: ToDo[]) => {
         data.forEach((toDo: ToDo) => {
           if (toDo.status === true) {
@@ -71,18 +75,18 @@ export class PageListComponent implements OnInit, OnDestroy {
           } else {
             this.todos.push(toDo);
           }
-
         });
         this.todos.sort((obj1, obj2) => {
           return obj1.position - obj2.position;
-
-        })
+        });
       },
-      error: (err) => { console.log(err) },
-      complete: () => { console.log("load completed") }
-
-    })
-
+      error: (err) => {
+        console.log(err);
+      },
+      complete: () => {
+        console.log('load completed');
+      },
+    });
 
     // this._dataService.getStats().subscribe({
 
@@ -101,9 +105,7 @@ export class PageListComponent implements OnInit, OnDestroy {
     // })
   }
 
-
   public create(event: ToDo): void {
-
     event.position = this.todos.length + 1;
     this._dataService.postToDo(event).subscribe({
       next: (data: ToDo) => {
@@ -112,46 +114,43 @@ export class PageListComponent implements OnInit, OnDestroy {
         this.position();
       },
       error: (err) => {
-        console.log("error while creating")
-        console.log(err)
+        console.log('error while creating');
+        console.log(err);
       },
-      complete: () => { console.log("created completed") }
+      complete: () => {
+        console.log('created completed');
+      },
     });
   }
 
-
   public update(event: EventPing): void {
-
-    if ("check" === event.label) {
-
+    if ('check' === event.label) {
       if (!event.object.status) {
         this.todosdone.splice(this.todosdone.indexOf(event.object), 1);
         this.todos.push(event.object);
-      }
-      else {
+      } else {
         this.todos.splice(this.todos.indexOf(event.object), 1);
         this.todosdone.push(event.object);
       }
     }
 
-    if ("label" === event.label) {
-
+    if ('label' === event.label) {
       if (event.object.status) {
         this.todosdone.forEach((toDo: ToDo) => {
-          if (toDo.id === event.object.id) {
+          if (toDo._id === event.object._id) {
             toDo.label = event.object.label;
           }
         });
-
-      }
-      else {
+      } else {
         this.todos.forEach((toDo: ToDo) => {
-          if (toDo.id === event.object.id) {
+          if (toDo._id === event.object._id) {
             toDo.label = event.object.label;
           }
         });
-
       }
+    }
+    if ('delete' === event.label) {
+      this.loadData();
     }
   }
 }

@@ -70,15 +70,15 @@ export class TemplateTodoComponent implements OnInit {
     this._dataService.deleteToDo(this.toDo)
       .subscribe({
         next: (data: ToDo) => {
-          // const eventObject: EventPing = {
-          //   label: "delete",
-          //   object: this.toDo
-          // };
-          // this.ping.emit(eventObject);
+          const eventObject: EventPing = {
+            label: "delete",
+            object: this.toDo
+          };
+          this.ping.emit(eventObject);
         },
         error: (err) => { console.log(err) },
         complete: () => { console.log("delete completed") }
       });
-    window.location.reload();
+    // window.location.reload();
   }
 }
